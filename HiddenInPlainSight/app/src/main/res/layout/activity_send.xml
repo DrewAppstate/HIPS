@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    tools:context=".Send">
+
+    <EditText android:id="@+id/phoneNum"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter a phone number"
+        android:inputType="number"/>
+
+    <EditText android:id="@+id/sending_message"
+        android:layout_below="@+id/phoneNum"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter a message" />
+
+    <ImageView android:id="@+id/imageView"
+        android:clickable="true"
+        android:onClick="takePicture"
+        android:layout_below="@+id/sending_message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher" />
+
+    <Button android:id="@+id/btnSendSMS"
+        android:layout_below="@+id/imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:onClick="sendMessage"
+        />
+
+</RelativeLayout>
