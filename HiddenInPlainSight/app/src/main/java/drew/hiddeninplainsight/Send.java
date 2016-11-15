@@ -26,6 +26,7 @@ import java.util.UUID;
 public class Send extends AppCompatActivity {
 
     Encrypt encrypt = new Encrypt();
+    Steg steg = new Steg();
     ImageView iv;
     Button sendBtn;
     Bitmap bp;
@@ -55,7 +56,6 @@ public class Send extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Toast.makeText(getApplicationContext(), "In the Activity Result", Toast.LENGTH_LONG).show();
         File folder = new File(Environment.getExternalStorageDirectory() +
                 File.separator + "H.I.P.S.");
 
@@ -98,7 +98,6 @@ public class Send extends AppCompatActivity {
 
 
     public void sendMessage() {
-        Toast.makeText(getApplicationContext(), "starting sendMessage", Toast.LENGTH_LONG).show();
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
         EditText phoneNum = (EditText) findViewById(R.id.phoneNum);
         TextView sending_message = (TextView) findViewById(R.id.sending_message);
@@ -108,17 +107,19 @@ public class Send extends AppCompatActivity {
         String message = sending_message.getText().toString();
 
         String encryptedMessage = encrypt.convert(message);
+        steg.encodePicture(bp, encryptedMessage);
+        //bp.compress(Bitmap.CompressFormat.PNG,100,out);
 
         try {
             sendIntent.putExtra("address", phoneNo);
-            sendIntent.putExtra("sms_body", encryptedMessage);
+            //sendIntent.putExtra("sms_body", encryptedMessage);
             sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(photoPath));
             sendIntent.setType("image/png"); //this sends everything you just have to choose messaging
             startActivity(Intent.createChooser(sendIntent,"Send"));
 
 
             Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
-
+            finish();
         }
 
         catch (Exception e) {
