@@ -31,6 +31,7 @@ public class Send extends AppCompatActivity {
     Button sendBtn;
     Bitmap bp;
     File photoPath;
+    FileOutputStream out = null;
 
 
     @Override
@@ -52,14 +53,20 @@ public class Send extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, 0);
     }
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        bp = (Bitmap) data.getExtras().get("data");
+        iv.setImageBitmap(bp);
+
+    }
+
+    public void saveImage(Bitmap bitmap)
+    {
         File folder = new File(Environment.getExternalStorageDirectory() +
                 File.separator + "H.I.P.S.");
 
-        FileOutputStream out = null;
+
         String uniquePhotoId = UUID.randomUUID().toString();
 
 
@@ -81,7 +88,6 @@ public class Send extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        bp = (Bitmap) data.getExtras().get("data");
         iv.setImageBitmap(bp);
         bp.compress(Bitmap.CompressFormat.PNG,100,out);
 
@@ -96,7 +102,6 @@ public class Send extends AppCompatActivity {
         }
     }
 
-
     public void sendMessage() {
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
         EditText phoneNum = (EditText) findViewById(R.id.phoneNum);
@@ -107,12 +112,15 @@ public class Send extends AppCompatActivity {
         String message = sending_message.getText().toString();
 
         String encryptedMessage = encrypt.convert(message);
+        //iv.setImageBitmap(bp);
         steg.encodePicture(bp, encryptedMessage);
-        //bp.compress(Bitmap.CompressFormat.PNG,100,out);
+        iv.setImageBitmap(bp);
+        iv.buildDrawingCache();
+        Bitmap bm =iv.getDrawingCache();
+        saveImage(bm);
 
         try {
             sendIntent.putExtra("address", phoneNo);
-            //sendIntent.putExtra("sms_body", encryptedMessage);
             sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(photoPath));
             sendIntent.setType("image/png"); //this sends everything you just have to choose messaging
             startActivity(Intent.createChooser(sendIntent,"Send"));
@@ -126,6 +134,7 @@ public class Send extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "SMS faild, please try again.", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+
 
     }
 }

@@ -9,20 +9,29 @@ android:paddingRight="16dp"
 android:paddingTop="16dp"
 tools:context=".MainActivity">
 
-<Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Msg"
-    android:id="@+id/newMessage"
-    android:onClick="newMessage"
-    android:layout_gravity="left|center_horizontal" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Msg"
+        android:id="@+id/newMessage"
+        android:onClick="newMessage"
+        android:layout_alignParentLeft="true"  />
 
-<ListView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/listView"
-    android:layout_below="@+id/newMessage"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Receive"
+        android:id="@+id/refresh"
+        android:onClick="decodePic"
+        android:layout_alignParentRight="true"  />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Receive"
+        android:layout_below="@+id/newMessage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp" />
+
 
 </RelativeLayout>

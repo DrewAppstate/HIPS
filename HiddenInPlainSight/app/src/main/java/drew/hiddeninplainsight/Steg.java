@@ -49,15 +49,61 @@ public class Steg {
                 red = (p & 0xff0000) >> 16;    //bitwise shifting
                 green = (p & 0xff00) >> 8;
                 blue = p & 0xff;
-                if (counter != max) {
+                if (counter < (max - 1)) {
                     blue = blue >> 1;
                     blue = blue << 1;
                     blue = blue ^ Character.getNumericValue(strToBinary.charAt(counter));
+
+                    // Just to demonstrate a change in the picture
+                    bp.setPixel(x, y, Color.BLUE);
                 }
-                //p = 0xff000000 | (red << 16) | (green << 8) | blue;
-                bp.setPixel(x, y, Color.rgb(red, green, blue));
+
+                //Sets the pixel to the changed pixel
+                //bp.setPixel(x, y, Color.rgb(red, green, blue));
+                counter++;
             }
         }
+    }
+
+    public String decodePicture(Bitmap bp) {
+        //Key to know if picture is encrypted
+        //"/nDr3w!CaP$t0n3" is 99 bits long
+
+        String key = stringToBinary("/nDr3w!CaP$t0n3");
+        String message = "";
+
+        int red = 0, blue = 0, green = 0, index, p, height, width, counter = 0, max;
+        height = bp.getHeight();
+        width = bp.getWidth();
+        max = key.length();
+
+        int[] pix = new int[width * height];
+        bp.getPixels(pix, 0, width, 0, 0, width, height);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                index = y * width + x;
+                p = pix[index];
+                red = (p & 0xff0000) >> 16;
+                green = (p & 0xff00) >> 8;
+                blue = p & 0xff;
+                message += (blue << 31);
+                if (index >= 99)
+                {
+                    if (index == 99)
+                    {
+                        message.compareTo(key);
+                    }
+                    else if (index > 99)
+                    {
+                        String a = message.substring(message.length() - 99);
+                        //word.substring(word.length() - 3);
+                        a.compareTo(key);
+                    }
+                }
+            }
+        }
+        return key;
     }
     /*
         {
