@@ -29,9 +29,23 @@ tools:context=".MainActivity">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Receive"
+        android:src="@mipmap/ic_launcher"
         android:layout_below="@+id/newMessage"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp" />
+        android:layout_marginTop="70dp"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="nothing"
+        android:id="@+id/decodedMsg"
+        android:layout_marginTop="117dp"
+        android:layout_below="@+id/Receive"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:scrollbars = "vertical"/>
 
 
 </RelativeLayout>

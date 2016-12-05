@@ -6,8 +6,10 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.InputStream;
 
@@ -15,13 +17,20 @@ import java.io.InputStream;
 /**
  * Created by Drew and Doug.
  * Modified by Drew.
+ *
+ * This is the Home page of the application. It provides a
+ * button to choose a picture to decode and a button to
+ * create a new message. If the decode button is pressed
+ * after a picture is chosen the decoded text will apear
+ * in a text box at the bottom of the screen.
  */
 public class MainActivity extends AppCompatActivity {
 
-    MsgBody msgBody = new MsgBody();
     private static final int SELECT_PHOTO = 100;
 
+    Steg steg = new Steg();
     ImageView iv;
+    TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
         iv = (ImageView)findViewById(R.id.Receive);
+        tv = (TextView)findViewById(R.id.decodedMsg);
+        tv.setMovementMethod(new ScrollingMovementMethod());
+        String str = "";
             if (requestCode == SELECT_PHOTO)
             {
                     try {
@@ -48,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
                             Uri selectedImage = imageReturnedIntent.getData();
                             InputStream imageStream = getContentResolver().openInputStream(selectedImage);
                             Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+                            iv.setVisibility(View.VISIBLE);
+                            iv.setImageBitmap(yourSelectedImage);
+                            str = steg.decodePicture(yourSelectedImage);
+                            tv.setVisibility(View.VISIBLE);
+                            tv.setText(str);
                         }
                     }
                     catch (Exception e) {

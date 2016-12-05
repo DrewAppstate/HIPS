@@ -34,6 +34,7 @@ public class Send extends AppCompatActivity {
     FileOutputStream out = null;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,21 +113,19 @@ public class Send extends AppCompatActivity {
         String message = sending_message.getText().toString();
 
         String encryptedMessage = encrypt.convert(message);
-        //iv.setImageBitmap(bp);
         steg.encodePicture(bp, encryptedMessage);
         iv.setImageBitmap(bp);
         iv.buildDrawingCache();
-        Bitmap bm =iv.getDrawingCache();
+        Bitmap bm = iv.getDrawingCache();
         saveImage(bm);
 
         try {
             sendIntent.putExtra("address", phoneNo);
             sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(photoPath));
             sendIntent.setType("image/png"); //this sends everything you just have to choose messaging
+
             startActivity(Intent.createChooser(sendIntent,"Send"));
 
-
-            Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
             finish();
         }
 
